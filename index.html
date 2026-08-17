@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>macOS Keyboard Shortcuts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #12161c;
+      --ink-soft: #2a313c;
+      --paper: #f7f8fa;
+      --muted: #66707c;
+      --line: rgba(18, 22, 28, 0.1);
+      --accent: #0f9f6e;
+      --accent-2: #2a6fdb;
+      --key-bg: #ffffff;
+      --key-edge: #b9c0ca;
+      --glow: rgba(15, 159, 110, 0.2);
+      --panel: #f5f6f8;
+      --panel-edge: #e4e7ec;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+      min-height: 100vh;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+
+    /* Hero — brand first, one job */
+    header.hero {
+      margin-bottom: 56px;
+      animation: rise 0.7s ease-out both;
+    }
+
+    .brand {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 8vw, 5.2rem);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+
+    .lede {
+      max-width: 36rem;
+      font-size: 1.15rem;
+      color: #4a5563;
+      font-weight: 400;
+    }
+
+    .lede strong { color: var(--ink); font-weight: 600; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 18px;
+      margin-top: 28px;
+      padding: 12px 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-edge);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: #3c4654;
+      font-weight: 500;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend kbd {
+      font-size: 0.75rem;
+      padding: 3px 7px;
+    }
+
+    /* Nav chips — tab switcher, sticky so it never scrolls out of reach */
+    nav.toc {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+      padding: 12px 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--panel-edge);
+      animation: rise 0.7s 0.1s ease-out both;
+    }
+
+    nav.toc button {
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      color: var(--ink-soft);
+      padding: 8px 14px;
+      border: 1px solid var(--panel-edge);
+      border-radius: 8px;
+      background: var(--panel);
+      transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    nav.toc button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    nav.toc button[aria-selected="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(15, 159, 110, 0.25);
+    }
+
+    section.cat {
+      margin-bottom: 52px;
+      animation: rise 0.35s ease-out both;
+    }
+
+    section.cat[hidden] { display: none; }
+
+    .cat-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .cat-head h2 {
+      font-family: "Syne", sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    .cat-head .num {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      column-gap: 28px;
+      row-gap: 0;
+      padding: 8px 20px;
+      background: var(--panel);
+      border: 1px solid var(--panel-edge);
+      border-radius: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 11px 6px;
+      border-bottom: 1px solid rgba(18, 22, 28, 0.09);
+      transition: background 0.15s;
+    }
+
+    .row:hover {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .row .label {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .keys {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 4px;
+    }
+
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.6em;
+      padding: 5px 8px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #000000;
+      background: #ffffff;
+      border: 1px solid var(--key-edge);
+      border-bottom-width: 3px;
+      border-bottom-color: #9aa3af;
+      border-radius: 5px;
+      box-shadow: 0 1px 2px rgba(18, 22, 28, 0.14);
+      white-space: nowrap;
+    }
+
+    .plus {
+      color: #6b7480;
+      font-size: 0.7rem;
+      padding: 0 1px;
+      font-weight: 600;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      animation: rise 0.6s 0.2s ease-out both;
+    }
+
+    footer .accent-dot {
+      color: var(--accent);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .wrap { padding: 32px 18px 60px; }
+      .row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .keys { justify-content: flex-start; }
+      .brand { font-size: 2.6rem; }
+    }
+
+    @media print {
+      body { background: white; color: black; }
+      kbd { box-shadow: none; border-color: #999; color: black; background: white; }
+      .grid { background: #f2f2f2; }
+      .brand { color: black; }
+      nav.toc { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1 class="brand">macOS<br />Shortcuts</h1>
+      <p class="lede">A quick map of the keys that actually matter — system, windows, Finder, screenshots, text, and Terminal. <strong>⌘ is Command. ⌥ is Option. ⌃ is Control.</strong></p>
+      <div class="legend">
+        <span><kbd>⌘</kbd> Command</span>
+        <span><kbd>⌥</kbd> Option</span>
+        <span><kbd>⌃</kbd> Control</span>
+        <span><kbd>⇧</kbd> Shift</span>
+        <span><kbd>fn</kbd> Function</span>
+      </div>
+    </header>
+
+    <nav class="toc" role="tablist" aria-label="Shortcut categories">
+      <button type="button" role="tab" data-target="all">All</button>
+      <button type="button" role="tab" data-target="essentials">Essentials</button>
+      <button type="button" role="tab" data-target="desktop">Desktop &amp; windows</button>
+      <button type="button" role="tab" data-target="finder">Finder</button>
+      <button type="button" role="tab" data-target="screenshots">Screenshots</button>
+      <button type="button" role="tab" data-target="text">Text editing</button>
+      <button type="button" role="tab" data-target="spotlight">Search &amp; apps</button>
+      <button type="button" role="tab" data-target="terminal">Terminal</button>
+      <button type="button" role="tab" data-target="browser">Safari / Chrome</button>
+      <button type="button" role="tab" data-target="system">System</button>
+    </nav>
+
+    <section class="cat" id="essentials">
+      <div class="cat-head">
+        <span class="num">01</span>
+        <h2>Essentials</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">Copy</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>C</kbd></span></div>
+        <div class="row"><span class="label">Paste</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>V</kbd></span></div>
+        <div class="row"><span class="label">Cut</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>X</kbd></span></div>
+        <div class="row"><span class="label">Undo</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Z</kbd></span></div>
+        <div class="row"><span class="label">Redo</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>Z</kbd></span></div>
+        <div class="row"><span class="label">Select all</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>A</kbd></span></div>
+        <div class="row"><span class="label">Save</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>S</kbd></span></div>
+        <div class="row"><span class="label">Print</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>P</kbd></span></div>
+        <div class="row"><span class="label">Find</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>F</kbd></span></div>
+        <div class="row"><span class="label">New / New tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>N</kbd> <span class="plus">/</span> <kbd>⌘</kbd><span class="plus">+</span><kbd>T</kbd></span></div>
+        <div class="row"><span class="label">Close window / tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>W</kbd></span></div>
+        <div class="row"><span class="label">Quit app</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Q</kbd></span></div>
+        <div class="row"><span class="label">Hide app</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>H</kbd></span></div>
+        <div class="row"><span class="label">Hide others</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>H</kbd></span></div>
+        <div class="row"><span class="label">Minimize window</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>M</kbd></span></div>
+        <div class="row"><span class="label">Preferences / Settings</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>,</kbd></span></div>
+      </div>
+    </section>
+
+    <section class="cat" id="desktop">
+      <div class="cat-head">
+        <span class="num">02</span>
+        <h2>Desktop &amp; windows</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">Show Desktop</span><span class="keys"><kbd>fn</kbd><span class="plus">+</span><kbd>F11</kbd></span></div>
+        <div class="row"><span class="label">Mission Control</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>↑</kbd></span></div>
+        <div class="row"><span class="label">App windows (Exposé)</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>↓</kbd></span></div>
+        <div class="row"><span class="label">Move between Spaces</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>←</kbd> <span class="plus">/</span> <kbd>→</kbd></span></div>
+        <div class="row"><span class="label">Switch apps</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇥</kbd></span></div>
+        <div class="row"><span class="label">Switch windows (same app)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>`</kbd></span></div>
+        <div class="row"><span class="label">Full screen</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>F</kbd></span></div>
+        <div class="row"><span class="label">Tile / Window tiling menu</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>fn</kbd><span class="plus">+</span><kbd>F</kbd></span></div>
+        <div class="row"><span class="label">Notification Center</span><span class="keys"><kbd>fn</kbd><span class="plus">+</span><kbd>N</kbd></span></div>
+        <div class="row"><span class="label">Lock screen</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>Q</kbd></span></div>
+        <div class="row"><span class="label">Sleep display</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>⏏</kbd></span></div>
+        <div class="row"><span class="label">Force Quit dialog</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>⎋</kbd></span></div>
+      </div>
+      <p class="note">Show Desktop is often just F11 if “Use F1, F2… as standard function keys” is on. Trackpad: spread thumb + three fingers.</p>
+    </section>
+
+    <section class="cat" id="finder">
+      <div class="cat-head">
+        <span class="num">03</span>
+        <h2>Finder</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">New Finder window</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>N</kbd></span></div>
+        <div class="row"><span class="label">New folder</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>N</kbd></span></div>
+        <div class="row"><span class="label">Get Info</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>I</kbd></span></div>
+        <div class="row"><span class="label">Quick Look</span><span class="keys"><kbd>Space</kbd></span></div>
+        <div class="row"><span class="label">Go to folder…</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>G</kbd></span></div>
+        <div class="row"><span class="label">Go to Desktop</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>D</kbd></span></div>
+        <div class="row"><span class="label">Go to Home</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>H</kbd></span></div>
+        <div class="row"><span class="label">Go to Applications</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>A</kbd></span></div>
+        <div class="row"><span class="label">Show / hide path bar</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>P</kbd></span></div>
+        <div class="row"><span class="label">Show / hide hidden files</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>.</kbd></span></div>
+        <div class="row"><span class="label">Duplicate</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>D</kbd></span></div>
+        <div class="row"><span class="label">Move to Trash</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌫</kbd></span></div>
+        <div class="row"><span class="label">Empty Trash</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>⌫</kbd></span></div>
+        <div class="row"><span class="label">Eject disk</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>E</kbd></span></div>
+      </div>
+    </section>
+
+    <section class="cat" id="screenshots">
+      <div class="cat-head">
+        <span class="num">04</span>
+        <h2>Screenshots</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">Entire screen</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>3</kbd></span></div>
+        <div class="row"><span class="label">Selected area</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>4</kbd></span></div>
+        <div class="row"><span class="label">Window (after area tool)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>4</kbd> <span class="plus">then</span> <kbd>Space</kbd></span></div>
+        <div class="row"><span class="label">Screenshot toolbar</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>5</kbd></span></div>
+        <div class="row"><span class="label">Copy to clipboard (add Control)</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>3</kbd><span class="plus">/</span><kbd>4</kbd></span></div>
+        <div class="row"><span class="label">Record screen (via toolbar)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>5</kbd></span></div>
+      </div>
+    </section>
+
+    <section class="cat" id="text">
+      <div class="cat-head">
+        <span class="num">05</span>
+        <h2>Text editing</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">Jump to start / end of line</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>←</kbd> <span class="plus">/</span> <kbd>→</kbd></span></div>
+        <div class="row"><span class="label">Jump to start / end of doc</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>↑</kbd> <span class="plus">/</span> <kbd>↓</kbd></span></div>
+        <div class="row"><span class="label">Move by word</span><span class="keys"><kbd>⌥</kbd><span class="plus">+</span><kbd>←</kbd> <span class="plus">/</span> <kbd>→</kbd></span></div>
+        <div class="row"><span class="label">Delete previous word</span><span class="keys"><kbd>⌥</kbd><span class="plus">+</span><kbd>⌫</kbd></span></div>
+        <div class="row"><span class="label">Delete to start of line</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌫</kbd></span></div>
+        <div class="row"><span class="label">Select by word</span><span class="keys"><kbd>⇧</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>←</kbd><span class="plus">/</span><kbd>→</kbd></span></div>
+        <div class="row"><span class="label">Select to line start / end</span><span class="keys"><kbd>⇧</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>←</kbd><span class="plus">/</span><kbd>→</kbd></span></div>
+        <div class="row"><span class="label">Emoji &amp; Symbols</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>Space</kbd></span></div>
+        <div class="row"><span class="label">Paste and match style</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>V</kbd></span></div>
+      </div>
+    </section>
+
+    <section class="cat" id="spotlight">
+      <div class="cat-head">
+        <span class="num">06</span>
+        <h2>Search &amp; apps</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">Spotlight</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Space</kbd></span></div>
+        <div class="row"><span class="label">Finder search</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>Space</kbd></span></div>
+        <div class="row"><span class="label">Character Viewer (alt)</span><span class="keys"><kbd>fn</kbd><span class="plus">+</span><kbd>E</kbd></span></div>
+        <div class="row"><span class="label">Dictation</span><span class="keys"><kbd>fn</kbd> <span class="plus">twice</span></span></div>
+        <div class="row"><span class="label">Siri (if enabled)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Space</kbd> <span class="plus">hold</span></span></div>
+        <div class="row"><span class="label">Open app (Spotlight → type name)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Space</kbd> <span class="plus">→</span> <kbd>↵</kbd></span></div>
+      </div>
+    </section>
+
+    <section class="cat" id="terminal">
+      <div class="cat-head">
+        <span class="num">07</span>
+        <h2>Terminal.app</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">New tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>T</kbd></span></div>
+        <div class="row"><span class="label">Close tab / pane</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>W</kbd></span></div>
+        <div class="row"><span class="label">Close window</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>W</kbd></span></div>
+        <div class="row"><span class="label">Split pane horizontally</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>D</kbd></span></div>
+        <div class="row"><span class="label">Close split pane</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>D</kbd></span></div>
+        <div class="row"><span class="label">Next / previous tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>]</kbd> <span class="plus">/</span> <kbd>[</kbd></span></div>
+        <div class="row"><span class="label">Clear screen</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>K</kbd></span></div>
+        <div class="row"><span class="label">Interrupt process</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>C</kbd></span></div>
+        <div class="row"><span class="label">EOF / exit shell</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>D</kbd></span></div>
+        <div class="row"><span class="label">Suspend process</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>Z</kbd></span></div>
+        <div class="row"><span class="label">Search scrollback</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>F</kbd></span></div>
+        <div class="row"><span class="label">Bigger / smaller text</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>+</kbd> <span class="plus">/</span> <kbd>−</kbd></span></div>
+      </div>
+      <p class="note">⌘D splits a pane — it does not close a tab. Use ⌘W to close, ⌃D to exit the shell.</p>
+    </section>
+
+    <section class="cat" id="browser">
+      <div class="cat-head">
+        <span class="num">08</span>
+        <h2>Safari / Chrome</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">New tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>T</kbd></span></div>
+        <div class="row"><span class="label">Reopen closed tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>T</kbd></span></div>
+        <div class="row"><span class="label">Close tab</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>W</kbd></span></div>
+        <div class="row"><span class="label">Address bar</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>L</kbd></span></div>
+        <div class="row"><span class="label">Reload</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>R</kbd></span></div>
+        <div class="row"><span class="label">Hard reload (Chrome)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>R</kbd></span></div>
+        <div class="row"><span class="label">Back / Forward</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>[</kbd> <span class="plus">/</span> <kbd>]</kbd></span></div>
+        <div class="row"><span class="label">Next / previous tab</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⇥</kbd> <span class="plus">/</span> <kbd>⌃</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>⇥</kbd></span></div>
+        <div class="row"><span class="label">Jump to tab 1–8</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>1</kbd><span class="plus">…</span><kbd>8</kbd></span></div>
+        <div class="row"><span class="label">DevTools (Chrome)</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>I</kbd></span></div>
+        <div class="row"><span class="label">Incognito / Private</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>N</kbd></span></div>
+        <div class="row"><span class="label">Zoom in / out / reset</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>+</kbd> <span class="plus">/</span> <kbd>−</kbd> <span class="plus">/</span> <kbd>0</kbd></span></div>
+      </div>
+    </section>
+
+    <section class="cat" id="system">
+      <div class="cat-head">
+        <span class="num">09</span>
+        <h2>System &amp; accessibility</h2>
+      </div>
+      <div class="grid">
+        <div class="row"><span class="label">Log out</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>Q</kbd></span></div>
+        <div class="row"><span class="label">Shut down dialog</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⏏</kbd> <span class="plus">or</span> <kbd>⌃</kbd><span class="plus">+</span><kbd>Power</kbd></span></div>
+        <div class="row"><span class="label">Restart (hold Option in dialog)</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>⏏</kbd></span></div>
+        <div class="row"><span class="label">Volume / brightness</span><span class="keys"><kbd>F1</kbd><span class="plus">–</span><kbd>F12</kbd></span></div>
+        <div class="row"><span class="label">Mute</span><span class="keys"><kbd>F10</kbd></span></div>
+        <div class="row"><span class="label">Zoom in (accessibility)</span><span class="keys"><kbd>⌥</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>=</kbd></span></div>
+        <div class="row"><span class="label">Zoom out</span><span class="keys"><kbd>⌥</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>−</kbd></span></div>
+        <div class="row"><span class="label">Invert colors (if enabled)</span><span class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>8</kbd></span></div>
+        <div class="row"><span class="label">Start VoiceOver</span><span class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>F5</kbd></span></div>
+        <div class="row"><span class="label">Screenshot + clipboard combo tip</span><span class="keys"><kbd>⌃</kbd> <span class="plus">adds</span> copy</span></div>
+      </div>
+      <p class="note">Many shortcuts are remappable in System Settings → Keyboard → Keyboard Shortcuts.</p>
+    </section>
+
+    <footer>
+      <span><span class="accent-dot">●</span> Local reference · not an official Apple doc</span>
+      <span>Open file anytime from work/adhoc/</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const tabs = Array.from(document.querySelectorAll("nav.toc button[data-target]"));
+      const sections = Array.from(document.querySelectorAll("section.cat"));
+
+      function activate(target, updateHash) {
+        tabs.forEach((tab) => {
+          tab.setAttribute("aria-selected", String(tab.dataset.target === target));
+        });
+        sections.forEach((section) => {
+          section.hidden = target !== "all" && section.id !== target;
+          // restart the entrance animation on the newly shown panel
+          if (!section.hidden) {
+            section.style.animation = "none";
+            void section.offsetWidth;
+            section.style.animation = "";
+          }
+        });
+        if (updateHash) {
+          history.replaceState(null, "", target === "all" ? location.pathname : "#" + target);
+        }
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => activate(tab.dataset.target, true));
+      });
+
+      const fromHash = location.hash.slice(1);
+      const initial = sections.some((s) => s.id === fromHash) ? fromHash : "essentials";
+      activate(initial, false);
+
+      window.addEventListener("beforeprint", () => activate("all", false));
+    })();
+  </script>
+</body>
+</html>
